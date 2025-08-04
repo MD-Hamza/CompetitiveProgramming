@@ -38,6 +38,12 @@ struct Mat
 
     Mat(int _n, int _m) {n = _n; m = _m; a.assign(n, vector<int>(m, 0)); }
     Mat(vector< vector<int> > v) { n = v.size(); m = n ? v[0].size() : 0; a = v; }
+    
+    inline void identity() {
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n; j++)
+                a[i][j] = i == j;
+    }
 
     inline Mat operator * (const Mat &b) {
         assert(m == b.n);
@@ -48,6 +54,17 @@ struct Mat
                     ans.a[i][j] = (ans.a[i][j] + 1LL * a[i][k] * b.a[k][j] % MOD) % MOD;
                 }
             }
+        }
+        return ans;
+    }
+
+    inline Mat pow(long long k) {
+        assert(n == m);
+        Mat ans(n, n), t = a; ans.identity();
+        while (k) {
+            if (k & 1) ans = ans * t;
+            t = t * t;
+            k >>= 1;
         }
         return ans;
     }
