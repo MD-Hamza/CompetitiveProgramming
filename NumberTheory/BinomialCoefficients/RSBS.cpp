@@ -66,22 +66,21 @@ void solve()
         invfact[i] = invfact[i + 1] * (i + 1) % MOD;
     }
 
-    vll lefts = {0};
-    ll right = 0;
+    ll left = 0;
     ll res = 0;
 
-    for (char c : s) {
-        if (c == '(') lefts[lefts.size() - 1]++;
+    vll right(s.length() + 1, 0);
+    for (ll i = s.length() - 1; i >= 0; i--) {
+        right[i] = right[i + 1];
+        if (s[i] == ')') right[i]++;
+    }
+
+
+    for (ll i = 0; i < s.length(); i++) {
+        char c = s[i];
+        if (c == '(') left++;
         if (c == ')') {
-            right++;
-            ll j = right;
-
-            for (ll i = 0; i < lefts.size(); i++) {
-                res = res + power(lefts[i], j) - 1 % MOD;
-                j--;
-            }
-
-            lefts.push_back(0);
+            res = (res + nCr(left + right[i] - 1, left - 1)) % MOD;
         }
     }
 
