@@ -45,27 +45,17 @@ long long power (long long a, long long b) {
 }
 
 int superPow(int a, vector<int>& b) {
-    int n = 1337;
-    int phin = n;
-    
-    for (int i = 2; i * i <= n; i++) {
-        if (n % i == 0) {
-            while (n % i == 0)
-                n /= i;
-            phin -= phin / i;
-        }
-    }
-    phin -= phin / n;
-    
-    int res = 0;
+    int res = 1;
     for (int d : b) {
-        res = (10 * res + d) % phin;
+        res = power(res, 10);
+        res = (res * power(a, d)) % 1337;
     }
 
-    return power(a, res);
+    return res;
 }
 
 /* Main()  function */
 int32_t main() {
-    superPow(1, { 0 });
+    vector<int> v =  { 4,3,3,8,5,2 };
+    cout << superPow(3, v) << endl;
 }
