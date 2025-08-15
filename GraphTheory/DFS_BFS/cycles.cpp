@@ -32,57 +32,86 @@ typedef unsigned long int uint32;
 typedef long long int int64;
 typedef unsigned long long int  uint64;
 
-const int MAXN = 1000000;
-vector<int> adj[MAXN];
+int n, m, k;
+const int MAXN = 1000;
+char board[MAXN][MAXN];
+int dx[4] = {1, 0, 0, -1};
+int dy[4] = {0, -1, 1, 0};
+string dirChar = "DLRU";
 
-ll m, n;
-
-char dir(int v, int u) {
-    if (v % m > u % m) return 'L';
-    if (v % m < u % m) return 'R';
-    if (v / m > u / m) return 'U';
-    if (v / m < u / m) return 'D';
-    return ' ';
-}
-
-string bfs(int root, int start, int k, string seq) {
-    if (k == 0 && root == start) return seq;
-    if (k == 0) return "";
-
-    for (int u : adj[root]) {
-        string res = bfs(u, start, k - 1, seq + dir(root, u));
-        if (res != "") return res;
-    }
-    return "";
+bool valid(int x, int y) {
+    return x >= 0 && x < n && y >= 0 && y < m && board[x][y] != '*';
 }
 
 void solve()
 {
-    ll k;
     cin >> n >> m >> k;
-    char board[n][m];
-    int start;
+    int steps[n][m];
+
+    int sx, sy;
 
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
             cin >> board[i][j];
-            if (board[i][j] == 'X')
-                start = i * m + j;
+            steps[i][j] = -1;
+            if (board[i][j] == 'X') {
+                sx = i;
+                sy = j;
+                steps[i][j] = 0;
+            }
         }
     }
 
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < m; j++) {
-            if (i + 1 < n && board[i + 1][j] != '*') adj[i * m + j].push_back(i * m + m + j);
-            if (j - 1 >= 0 && board[i][j - 1] != '*') adj[i * m + j].push_back(i * m + j - 1);
-            if (j + 1 < m && board[i][j + 1] != '*') adj[i * m + j].push_back(i * m + j + 1);
-            if (i - 1 >= 0 && board[i - 1][j] != '*') adj[i * m + j].push_back(i * m - m + j);
+    queue<pii> q;
+    q.push({sx, sy});
+
+    while (!q.empty()) {
+        auto [i, j] = q.front(); q.pop();
+
+
+        if (i + 1 < n && board[i + 1][j] != '*' && steps[i + 1][j] == -1) {
+            steps[i + 1][j] = steps[i][j] + 1;
+            q.push({i + 1, j});
+        }
+
+        if (j - 1 >= 0 && board[i][j - 1] != '*' && steps[i][j - 1] == -1) {
+            steps[i][j - 1] = steps[i][j] + 1;
+            q.push({i, j - 1});
+        }
+
+        if (j + 1 < m && board[i][j + 1] != '*' && steps[i][j + 1] == -1) {
+            steps[i][j + 1] = steps[i][j] + 1;
+            q.push({i, j + 1});
+        }
+
+        if (i - 1 >= 0 && board[i - 1][j] != '*' && steps[i - 1][j] == -1) {
+            steps[i - 1][j] = steps[i][j] + 1;
+            q.push({i - 1, j});
         }
     }
 
-    string res = bfs(start, start, k, "");
-    res = res == "" ? "IMPOSSIBLE" : res;
-    cout << res;
+    string res;
+    int cx = sx, cy = sy;
+    for (int step = 0; step < k; step++) {
+        bool moved = false;
+        for (int d = 0; d < 4; d++) {
+            int nx = cx + dx[d], ny = cy + dy[d];
+            if (!valid(nx, ny)) continue;
+            int rem = k - step - 1;
+            if (steps[nx][ny] != -1 && steps[nx][ny] <= rem && (rem - steps[nx][ny]) % 2 == 0) {
+                res += dirChar[d];
+                cx = nx; cy = ny;
+                moved = true;
+                break;
+            }
+        }
+        if (!moved) {
+            cout << "IMPOSSIBLE\n";
+            return;
+        }
+    }
+
+    cout << res << "\n";
 }
 
 /* Main()  function */
