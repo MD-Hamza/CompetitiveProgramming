@@ -35,20 +35,22 @@ typedef unsigned long long int  uint64;
 
 void solve()
 {
-    ll n, c, j, y, k;
+    ll n, k;
     cin >> n >> k;
 
-    c = 0;
-    j = 3;
-    y = 1;
+    int minK = 0;
 
     while (n > 0) {
-        if (n % 3 != 0) c += (j * (n % 3));
         n /= 3;
-        j = j * 3 + y;
-        y *= 3;
+        minK += (n % 3);
+        if (minK > k) {
+            cout << -1 << end;
+            return;
+        }
     }
-    cout << c << endl;
+
+    if (d > k) cout << -1 << endl;
+    else cout << c << endl;
 }
 
 /* Main()  function */
