@@ -33,41 +33,28 @@ typedef long long int int64;
 typedef unsigned long long int  uint64;
 
 vector<vector<int>> up;
-vector<int> parents;
-vector<vector<int>> children;
+vector<int> parents, tin, tout, depth;
+vector<vector<int>> children, depths;
 
 int n, l;
+int timer = 0;
 
-void preprocess()
+void dfs(int v, int d)
 {
-    for (int i = 1; i <= n; i++)
-        up[i][0] = parents[i - 1];
-    
+    tin[v] = ++timer;
+    depth[v] = d;
+    depths[d].push_back(tin[v]);
+    up[v][0] = parents[v - 1];
     for (int j = 1; j <= l; j++) {
-        for (int i = 1; i <= n; i++) {
-            up[i][j] = up[up[i][j - 1]][j - 1];
-        }
+        up[v][j] = up[up[v][j - 1]][j - 1];
     }
+
+    for (int c : children[v]) {
+        dfs(c, d + 1);
+    }
+    tout[v] = ++timer;
 }
 
-int ancestors(int u, int p) {
-    queue<int> q;
-    q.push(u);
-    int depth = 0;
-    while (!q.empty()) {
-        for (int i = q.size(); i >= 0; i--) {
-            depth++;
-            int v = q.front(); q.pop();
-            for (int m : children[v]) {
-                q.push(m);
-            }
-        }
-        cout << depth << endl;
-        if (depth == p)
-            return q.size();
-    }
-    return 0;
-}
 
 void solve()
 {
@@ -77,6 +64,10 @@ void solve()
     l = ceil(log2(n + 1));
     up.assign(n + 1, vector<int>(l + 1));
     children.resize(n + 1);
+    depths.resize(n + 1);
+    tin.resize(n + 1);
+    tout.resize(n + 1);
+    depth.resize(n + 1);
 
     for (int i = 0; i < n; i++) {
         cin >> p;
@@ -84,18 +75,27 @@ void solve()
         children[p].push_back(i + 1);
     }
     
-    preprocess();
+     for (int i = 0; i < n; i++) {
+        if (parents[i] == 0) {
+            dfs(i + 1, 0);
+        }
+    }
+
     cin >> m;
 
     for (int j = 0; j < m; j++) {
         cin >> v >> p;
+        int a = v;
         for (int j = l; j >= 0; j--) {
             if (p & (1 << j)) {
                 v = up[v][j];
             }
         }
         if (v == 0) cout << 0 << " ";
-        else cout << ancestors(v, p) << " ";
+        else {
+            vector<int> &d = depths[depth[a]];
+            cout << (int) (upper_bound(d.begin(), d.end(), tout[v]) - lower_bound(d.begin(), d.end(), tin[v])) - 1 << " ";
+        }
     }
 }
 
