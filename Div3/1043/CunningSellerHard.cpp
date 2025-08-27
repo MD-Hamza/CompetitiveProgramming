@@ -39,9 +39,11 @@ void solve()
     cin >> n >> k;
 
     int minK = 0;
+    vector<int> purchases;
 
     while (n > 0) {
         n /= 3;
+        purchases.push_back(n % 3);
         minK += (n % 3);
         if (minK > k) {
             cout << -1 << end;
