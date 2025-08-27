@@ -32,27 +32,45 @@ typedef unsigned long int uint32;
 typedef long long int int64;
 typedef unsigned long long int  uint64;
 
+vector<ll> p(20);
 
 void solve()
 {
-    ll n, k;
+    ll n, k, c;
     cin >> n >> k;
 
-    int minK = 0;
-    vector<int> purchases;
+    ll minK = 0;
+    ll x = 0;
+    c = 0;
+
+    vector<ll> purchases;
 
     while (n > 0) {
-        n /= 3;
+        c += (n % 3) * p[x+1];
+        if (x > 0) c += (n % 3) * x * p[x-1];
+
         purchases.push_back(n % 3);
         minK += (n % 3);
         if (minK > k) {
-            cout << -1 << end;
+            cout << -1 << endl;
             return;
         }
+        x++;
+        n /= 3;
     }
 
-    if (d > k) cout << -1 << endl;
-    else cout << c << endl;
+    k -= minK;
+    for (ll i = purchases.size() - 1; i > 0; i--) {
+        if (purchases[i] == 0) continue;
+        if (k < 2) break;
+
+        ll l = min(purchases[i], k / 2);
+        purchases[i - 1] += (3 * l);
+        c -= (p[i - 1] * l);
+        k -= (2 * l);
+    }
+
+    cout << c << endl;
 }
 
 /* Main()  function */
@@ -61,6 +79,9 @@ int32_t main() {
 
     int _tc = 1;
     cin >> _tc;
+
+    p[0] = 1;
+    for (int i = 1; i <= 20; i++) p[i] = p[i-1] * 3;
 
     for (int i = 1; i <= _tc; ++i)
     {
