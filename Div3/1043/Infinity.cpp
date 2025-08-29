@@ -32,7 +32,7 @@ typedef unsigned long int uint32;
 typedef long long int int64;
 typedef unsigned long long int  uint64;
 
-const int MAXN = 12;
+const int MAXN = 18;
 ll dp[MAXN];
 
 void solve()
@@ -49,9 +49,34 @@ void solve()
     }
     ll ls = (k - 1) / l;
     n = pow(10, l - 1) + ls;
-    
+      
     ll ans = 0;
+    string st = to_string(n);
+    for (int i = 0; i < k % l; i++) ans += (st[i] - '0');
+    if (k % l != 0) n--;
 
+    ll x = 1;
+
+    st = to_string(n);
+    l = st.length();
+
+    for (char c : st) {
+        int d = c - '0';
+
+        if (d != 0) {
+            if (l == 1) {
+                ans += (d * (d + 1)) / 2;
+                break;
+            }
+
+            n = n - d * pow(10, l - 1);
+            ans += dp[l - 2] * d + (d * (d - 1) / 2) * pow(10, l - 1) + d * (n + 1);
+        }
+
+        l--;
+    }
+
+    cout << ans << endl;
 }
 
 /* Main()  function */
@@ -63,7 +88,7 @@ int32_t main() {
 
     dp[0] = 45;
     for (int i = 1; i < MAXN; i++) {
-        dp[i] = 9 * dp[i - 1] + pow(10, i) * 45;
+        dp[i] = 10 * dp[i - 1] + pow(10, i) * 45;
     }
 
     for (int i = 1; i <= _tc; ++i)
