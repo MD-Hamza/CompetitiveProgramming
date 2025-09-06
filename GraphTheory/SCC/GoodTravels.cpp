@@ -74,21 +74,31 @@ void solve()
 
     visited.assign(N + 1, false);
     reverse(order.begin(), order.end());
-    
+    vector<vll> components;
+
+    vector<int> roots(N + 1, 0);
+    vector<vector<ll>> adj_cond(N + 1);
+
     for (auto v : order)
         if (!visited[v]) {
             std::vector<ll> component;
             dfs(v, adj_rev, component);
-            ll out = 0;
-            if (count(component.begin(), component.end(), S) > 0) {
-                for (ll i = 0; i < component.size(); i++) {
-                    out += fun[component[i]];
-                }
+            components.push_back(component);
+            ll total = 0;
+            for (ll i = 0; i < component.size(); i++) {
+                total += fun[component[i]];
             }
-
-            cout << out << endl;
-            return;
+            int root = *min_element(begin(component), end(component));
+            for (auto u : component)
+                roots[u] = root;
         }
+
+    for (int v = 1; v <= N; v++)
+        for (auto u : adj[v])
+            if (roots[v] != roots[u])
+                adj_cond[roots[v]].push_back(roots[u]);
+
+    
 }
 
 /* Main()  function */
