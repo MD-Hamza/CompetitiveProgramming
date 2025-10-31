@@ -32,14 +32,47 @@ typedef long long int int64;
 typedef unsigned long long int  uint64;
 
 
+ll m, d, a, b;
+vector<int> low;
+vector<int> high;
+
+int DP[4][4][4];
+
+int digitDP(int pos, int l, int u)
+{
+    if(pos == low.size()) return 1;
+    if(DP[pos][l][u] != -1) return DP[pos][l][u];
+    
+    int res = 0;
+
+    int LIMIT, START;
+
+    if(u == 0) LIMIT = high[pos];
+    else LIMIT = 9;
+
+    if(l == 0) START = low[pos];
+    else START = 0;
+
+    for(int dgt = START; dgt<=LIMIT; dgt++){
+        int nl = l;
+        int nu = u;
+
+        if(u == 0 && dgt < LIMIT) nu = 1;
+        if(l == 0 && dgt > START) nl = 1;
+
+        res += digitDP(pos+1, nl, nu);
+    }
+
+    return DP[pos][l][u] = res;
+}
+
 void solve()
 {
-    ll m, d, a, b;
     cin >> m >> d;
     cin >> a;
     cin >> b;
 
-
+    cout << digitDP(0, 0, 0) << endl;
 }
 
 /* Main()  function */
