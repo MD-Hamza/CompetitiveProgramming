@@ -35,7 +35,37 @@ typedef unsigned long long int  uint64;
 
 void solve()
 {
+    int n;
+    cin >> n;
+    int l = 1;
+    int r = n;
+    ll x, y;
 
+    while (l < r) {
+        int mid = (l + r) / 2;
+  
+        cout << "1 1 " << mid << flush << endl;
+        cin >> x;
+
+        cout << "2 1 " << mid << flush << endl;
+        cin >> y;
+
+        if (x < y) {
+            r = mid;
+        } else {
+            l = mid + 1;
+        }
+    }
+
+    cout << "1 1 " << n << flush << endl;
+    cin >> x;
+
+    cout << "2 1 " <<  n << flush << endl;
+    cin >> y;
+
+    r = y - x + l - 1;
+
+    cout << "! " << l << " " << r << flush << endl;
 }
 
 /* Main()  function */
