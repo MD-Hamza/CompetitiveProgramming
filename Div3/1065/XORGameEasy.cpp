@@ -34,7 +34,36 @@ typedef unsigned long long int  uint64;
 
 void solve()
 {
+    int n;
+    cin >> n;
 
+    vector<int> a(n);
+    vector<int> b(n);
+    bool mWin = false;
+    bool aWin = false;
+
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+        if (a[i]) aWin = !aWin;
+    }
+
+    for (int i = 0; i < n; i++) {
+        cin >> b[i];
+        if (b[i]) mWin = !mWin;
+    }
+
+    for (int i = 0; i < n; i++) {
+        if (a[i] != b[i]) {
+            if (i % 2 == 0 && !aWin || i % 2 == 1 && !mWin) {
+                aWin = !aWin;
+                mWin = !mWin;
+            }
+        }
+    }
+
+    if (aWin && !mWin) cout << "Ajisai" << endl;
+    else if (!aWin && mWin) cout << "Mai" << endl;
+    else cout << "Tie" << endl;
 }
 
 /* Main()  function */
