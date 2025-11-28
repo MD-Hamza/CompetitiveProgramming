@@ -34,15 +34,19 @@ typedef unsigned long long int  uint64;
 int grid[20001][20001];
 void solve()
 {
-    int n;
-    cin >> n;
-
-    for (int i = 0; i < n; i++) {
-        cin >> grid[i][0];
-        for (int j = 1; j <= grid[i][0]; j++) cin >> grid[i][j];
-    }
-
-
+    int n; cin >> n;
+	vector<vector<int>> g(n), relevant;
+	int max_k = 0;
+	for(int i = 0; i < n; i++){
+		int k; cin >> k;
+		g[i].resize(k);
+		ckmax(max_k, k);
+		for(int j = 0; j < k; j++){
+			cin >> g[i][j];
+			if(relevant.size() == j) relevant.pb({});
+			relevant[j].pb(i);
+		}
+	}
 }
 
 /* Main()  function */
