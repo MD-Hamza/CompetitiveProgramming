@@ -40,11 +40,11 @@ void solve()
 	for(int i = 0; i < n; i++){
 		int k; cin >> k;
 		g[i].resize(k);
-		ckmax(max_k, k);
+		max(max_k, k);
 		for(int j = 0; j < k; j++){
 			cin >> g[i][j];
-			if(relevant.size() == j) relevant.pb({});
-			relevant[j].pb(i);
+			if(relevant.size() == j) relevant.push_back({});
+			relevant[j].push_back(i);
 		}
 	}
 }
