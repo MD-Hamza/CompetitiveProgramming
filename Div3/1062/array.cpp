@@ -34,7 +34,21 @@ typedef unsigned long long int  uint64;
 
 void solve()
 {
+    int n;
+    cin >> n;
+    vector<ll> a(n);
 
+    for (int i = 0; i < n; i++) {
+        cin >> a[i];
+    }
+
+    for (ll x : {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53}) {
+        for (ll i : a) {
+            if (i % x != 0) return void(cout << x << "\n");
+        }
+    }
+
+    cout << "-1\n";
 }
 
 /* Main()  function */
