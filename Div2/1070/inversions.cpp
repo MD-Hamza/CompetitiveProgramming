@@ -37,19 +37,15 @@ void solve()
     int n;
     cin >> n;
     vector<int> a(n);
-    vector<bool> removed(n, false);
 
     for (int i = 0; i < n; i++) cin >> a[i];
 
     int inv = 0;
-    for (int i = 0; i < n; i++) {
-        for (int j = i+1; j < n; j++) {
-            if (removed[j]) continue;
-            if (a[i] > a[j]) {
-                inv++;
-                removed[j] = true;
-            }
-        }
+    int greatest = a[0];
+
+    for (int i = 1; i < n; i++) {
+        if (a[i] >= greatest) greatest = a[i];
+        else inv++;
     }
 
     cout << inv << endl;
