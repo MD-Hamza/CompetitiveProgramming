@@ -34,7 +34,8 @@ typedef unsigned long long int  uint64;
 
 void solve()
 {
-
+    int n;
+    cin >> n;
 }
 
 /* Main()  function */
