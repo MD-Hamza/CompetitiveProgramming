@@ -36,6 +36,27 @@ void solve()
 {
     int n;
     cin >> n;
+
+    string s;
+    cin >> s;
+
+    int maxCount = 0;
+    int count = 0;
+
+    for (auto c : s) {
+        if (c == '1') {
+            maxCount = max(maxCount, count);
+            count = 0;
+        } else count++;
+    }
+
+    int i = 0;
+    while (s[i] != '1') {
+        count++;
+        i++;
+    }
+
+    cout << max(maxCount, count) << endl;
 }
 
 /* Main()  function */
