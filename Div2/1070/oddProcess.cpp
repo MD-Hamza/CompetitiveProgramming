@@ -42,22 +42,29 @@ void solve()
     for (int i =0; i < n; i++) {
         cin >> c;
         if (c % 2) odd.push_back(c);
-        else event.push_back(c);
+        else even.push_back(c);
     }
 
     sort(odd.rbegin(), odd.rend());
     sort(even.rbegin(), even.rend());
+    
+    int s = 0;
 
     for (int i = 0; i < n; i++) {
-        if (odd.size == 0) {
-            cout << 0 << endl;
+        if (odd.size() == 0) {
+            cout << 0 << " ";
             continue;
         }
 
-        if (i == 0) cout << odd[0] << endl;
-        else if (even.size() <= i) cout << even[i - 1] << endl;
-        else cout << odd[0] << endl;
+        if (i == 0) s = odd[0];
+        else if (i <= even.size()) s += even[i - 1];
+        else {
+            if (odd.size() < (i - even.size()))
+        }
+
+        cout << s << " ";
     }
+    cout << "\n";
 }
 
 /* Main()  function */
