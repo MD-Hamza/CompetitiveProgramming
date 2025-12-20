@@ -47,8 +47,11 @@ void solve()
 
     sort(odd.rbegin(), odd.rend());
     sort(even.rbegin(), even.rend());
-    
-    int s = 0;
+    vector<ll> pref(even.size() + 1, 0);
+    for (int i = 0; i < even.size(); i++) {
+        pref[i + 1] = pref[i] + even[i];
+    }
+    ll s = 0;
 
     for (int i = 0; i < n; i++) {
         if (odd.size() == 0) {
@@ -56,10 +59,18 @@ void solve()
             continue;
         }
 
+        if (even.size() == 0) {
+            cout << (i%2==0 ? odd[0] : 0) << " ";
+            continue;
+        }
+
         if (i == 0) s = odd[0];
         else if (i <= even.size()) s += even[i - 1];
         else {
-            if (odd.size() < (i - even.size()))
+            ll excess = i - even.size();
+            ll y = (excess + 1) / 2 * 2;
+            if (odd.size() - 1 < y) s = 0;
+            else s = odd[0] + pref[even.size() - (excess % 2)];
         }
 
         cout << s << " ";
