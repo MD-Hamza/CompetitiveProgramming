@@ -73,6 +73,7 @@ void solve()
             else s = odd[0] + pref[even.size() - (excess % 2)];
         }
 
+        
         cout << s << " ";
     }
     cout << "\n";
