@@ -39,9 +39,22 @@ void solve()
     vector<int> a(n);
 
     for (int i = 0; i < n; i++) cin >> a[i];
-    for (int i = 0; i < n; i++) {
-        a[i];
+
+    ll X = 0;
+    int f = 0;
+    int s = 1;
+
+    while (s < n) {
+        if (a[f] < -a[s]) {
+            X -= a[s];
+        } else {
+            X += a[f];
+            f = s;
+        }
+        s++;
     }
+
+    cout << X << endl;
 }
 
 /* Main()  function */
